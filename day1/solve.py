@@ -1,6 +1,6 @@
 import re
 
-file = open("input", "r")
+file = open("day1/input", "r")
 lines = file.readlines()
 
 def convert_number(numb):
