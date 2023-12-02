@@ -3,13 +3,13 @@ import re
 input = open("day2/input", 'r')
 lines = input.readlines()
 
-blueMax = 14
-greenMax = 13
-redMax = 12
 
 ids = []
 
 for line in lines:
+    blueMax = 0
+    greenMax = 0
+    redMax = 0
 
     gameRegex = "Game (\d+)"
     resultRegex = "((?:(\d+) (\w+)(?:,|)))+"
@@ -21,14 +21,11 @@ for line in lines:
     doable = True
     for item in result:
         if item[2] == "blue" and int(item[1]) > blueMax:
-            doable = False
-            break
+            blueMax = int(item[1])
         if item[2] == "green" and int(item[1]) > greenMax:
-            doable = False
-            break
+            greenMax = int(item[1])
         if item[2] == "red" and int(item[1]) > redMax:
-            doable = False
-            break
-    if doable:
-        ids.append(gameId)
+            redMax = int(item[1])
+            
+    ids.append(blueMax*greenMax*redMax)
 print(sum(ids))
