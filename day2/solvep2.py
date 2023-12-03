@@ -1,6 +1,6 @@
 import re
 
-input = open("day2/input", 'r')
+input = open("day2/input.txt", 'r')
 lines = input.readlines()
 
 ids = []

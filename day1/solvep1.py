@@ -1,6 +1,6 @@
 import re
 
-file = open("day1/input", "r")
+file = open("day1/input.txt", "r")
 lines = file.readlines()
         
 found_numbers = []
