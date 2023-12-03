@@ -1,4 +1,5 @@
 import re
+import math
 
 file = open("day3/input", "r")
 lines = file.read().split("\n")
@@ -12,10 +13,10 @@ for line in lines[:-1]:
 symbols = []
 for xindex, x in enumerate(matrix):
     for yindex, y in enumerate(x):
-        if (not re.compile('\.|\d').match(y)):
+        if (re.compile('\*').match(y)):
             symbols.append((xindex, yindex))
 
-valid = []
+valid = {}
 for rowIndex, numb in enumerate(numbers):
     for n in numb:
         numbAdded = False
@@ -24,17 +25,31 @@ for rowIndex, numb in enumerate(numbers):
                 break
             for s in symbols:
                 if rowIndex - 1 == s[0] and (y - 1 == s[1] or y == s[1] or y + 1 == s[1]):
-                    valid.append(n[1])
+                    if str(str(s[0]) + "," + str(s[1])) in valid.keys():
+                        valid[str(s[0]) + "," + str(s[1])] += [(n[1])]
+                    else:
+                        valid[str(s[0]) + "," + str(s[1])] = [(n[1])]
                     numbAdded = True
 
-                if rowIndex == s[0] and (y - 1 == s[1] or y == s[1] or y + 1 == s[1]):
-                    valid.append(n[1])
+                if rowIndex == s[0] and (y - 1 == s[1] or y + 1 == s[1]):
+                    if str(str(s[0]) + "," + str(s[1])) in valid.keys():
+                        valid[str(s[0]) + "," + str(s[1])] += [(n[1])]
+                    else:
+                        valid[str(s[0]) + "," + str(s[1])] = [(n[1])]
                     numbAdded = True
 
                 if rowIndex + 1 == s[0] and (y - 1 == s[1] or y == s[1] or y + 1 == s[1]):
-                    valid.append(n[1])
+                    if str(str(s[0]) + "," + str(s[1])) in valid.keys():
+                        valid[str(s[0]) + "," + str(s[1])] += [(n[1])]
+                    else:
+                        valid[str(s[0]) + "," + str(s[1])] = [(n[1])]
                     numbAdded = True
 
                 if numbAdded:
                     break
-print(sum(valid))
+
+total = []
+for key in valid.keys():
+    if len(valid[key]) == 2:
+        total.append(math.prod(valid[key]))
+print(sum(total))

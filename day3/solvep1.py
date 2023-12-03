@@ -37,20 +37,4 @@ for rowIndex, numb in enumerate(numbers):
 
                 if numbAdded:
                     break
-print(valid)
 print(sum(valid))
-
-# above = [(-1,-1), (-1, 0), (-1, 1)]
-# same = [(0,-1), (0, 1)]
-# below = [(1,-1), (1, 0), (1, 1)]
-
-# for cords in symbols:
-#     for dev in above:
-#         if (re.compile('\d').match(matrix[cords[0]+dev[0]][cords[1]+dev[1]])):
-#             print("Above: ", matrix[cords[0]+dev[0]][cords[1]+dev[1]])
-#     for dev in same:
-#         if (re.compile('\d').match(matrix[cords[0]+dev[0]][cords[1]+dev[1]])):
-#             print("Same: ", matrix[cords[0]+dev[0]][cords[1]+dev[1]])
-#     for dev in below:
-#         if (re.compile('\d').match(matrix[cords[0]+dev[0]][cords[1]+dev[1]])):
-#             print("Below: ", matrix[cords[0]+dev[0]][cords[1]+dev[1]])
