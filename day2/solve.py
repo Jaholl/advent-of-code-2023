@@ -3,22 +3,15 @@ import re
 input = open("day2/input", 'r')
 lines = input.readlines()
 
-
 ids = []
-
 for line in lines:
-    blueMax = 0
-    greenMax = 0
-    redMax = 0
-
+    blueMax, greenMax, redMax = 0
     gameRegex = "Game (\d+)"
     resultRegex = "((?:(\d+) (\w+)(?:,|)))+"
+
     gameId = int(re.search(gameRegex, line).group(1))
     result = re.findall(resultRegex, line)
 
-    print(gameId)
-    print(result)
-    doable = True
     for item in result:
         if item[2] == "blue" and int(item[1]) > blueMax:
             blueMax = int(item[1])
