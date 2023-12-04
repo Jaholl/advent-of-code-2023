@@ -19,14 +19,17 @@ for line in lines:
             cardworth += 1
     
     fixedMatrix[ticketId] = (1, cardworth)
-print(total)
+print(fixedMatrix)
 
 for line in lines:
     ticketId = int(re.search("\d+", line).group())
-    print(ticketId)
-    for i in range(0, fixedMatrix[ticketId][1]):
+    for i in range(1, fixedMatrix[ticketId][1] +1):
         if ticketId + i > len(lines):
             continue
-        fixedMatrix[ticketId] = (fixedMatrix[ticketId][0] + 1, fixedMatrix[ticketId][1])
+        fixedMatrix[ticketId + i] = (fixedMatrix[ticketId + i][0] + fixedMatrix[ticketId][0], fixedMatrix[ticketId + i][1])
+print(fixedMatrix)
 
-print(sum(fixedMatrix[0]))
+total = 0
+for item in fixedMatrix.values():
+    total += item[0]
+print(total)
