@@ -10,5 +10,14 @@ for line in lines:
     winnernumbers = input.split("|")[0]
     ournumbers = input.split("|")[1]
     winnernumbers = re.findall("\d+", winnernumbers)
+    ournumbers = re.findall("\d+", ournumbers)
 
-    print(winnernumbers)
+    for numb in ournumbers:
+        if numb in winnernumbers:
+            if cardworth == 0:
+                cardworth = 1
+            else:
+                cardworth *= 2
+    
+    total += cardworth
+print(total)
