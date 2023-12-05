@@ -24,14 +24,12 @@ def source_destination_range_map(input):
       fullrange = -1
   return returnmap
 
-def find_if_in_interval(item, list, nextList):
-  nextListIndexes = min([m.split(',')[1] for m in nextList.keys()])
+def find_if_in_interval(item, list):
   for key in list.keys():
-    indexes = key.split(',')
-    if int(item) >= int(indexes[0]) and int(item) <= int(indexes[0]) + int(indexes[1]):
-      test = (int(list[key]) + int(item) - int(indexes[0]))
-      return (item, int(min(nextListIndexes)))
-  return (item, int(min(nextListIndexes)))
+    source, fullrange = key.split(',')
+    if int(item) >= int(source) and int(item) <= int(source) + int(fullrange):
+      return (int(list[key]) + int(source) + int(fullrange) - int(item))
+  return (int(list[key]))
 
 categoryInput = []
 for cat in category:
@@ -61,22 +59,20 @@ humidity_to_location = source_destination_range_map(categoryInput[8])
 lowest_location = 99999999999999999999999999
 for key, value in seeds_to_plant:
   index = key
-  print(key, key+value)
-  test = []
+  print("New seed: ", key, key+value)
   while index <= key+value:
-    soil = find_if_in_interval(index, seed_to_soil, soil_to_fertilizer)
-    fertilizer = find_if_in_interval(soil[0], soil_to_fertilizer, fertilizer_to_water)
-    water = find_if_in_interval(fertilizer[0], fertilizer_to_water, water_to_light)
-    light = find_if_in_interval(water[0], water_to_light, light_to_temperature)
-    temp = find_if_in_interval(light[0], light_to_temperature, temperature_to_humidity)
-    hum = find_if_in_interval(temp[0], temperature_to_humidity, humidity_to_location)
-    loc = find_if_in_interval(hum[0], humidity_to_location, humidity_to_location)
+    soil = find_if_in_interval(index, seed_to_soil)
+    fertilizer = find_if_in_interval(soil, soil_to_fertilizer)
+    water = find_if_in_interval(fertilizer, fertilizer_to_water)
+    light = find_if_in_interval(water, water_to_light)
+    temp = find_if_in_interval(light, light_to_temperature)
+    hum = find_if_in_interval(temp, temperature_to_humidity)
+    loc = find_if_in_interval(hum, humidity_to_location)
 
-    test = [soil[1], fertilizer[1], water[1], light[1], temp[1], hum[1], loc[1]]
-    if loc[0] < lowest_location:
-      lowest_location = loc[0]
-    index += min(test)
-    print(index, key + value, min(test), test)
+    if loc < lowest_location:
+      lowest_location = loc
+    print(index, key + value)
+    index += 1
   print()
 
 print(lowest_location)
