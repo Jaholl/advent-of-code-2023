@@ -1,7 +1,7 @@
-import re
+import re, time
 
-file = open("day1/input.txt", "r")
-lines = file.readlines()
+start_time = time.time()
+lines = open("day1/input.txt", "r").readlines()
 
 def convert_number(numb):
     match numb:
@@ -31,4 +31,6 @@ for line in lines:
     match2 = convert_number(re.search("\d|eno|owt|eerht|ruof|evif|xis|neves|thgie|enin", line[::-1]).group())
     
     found_numbers.append(int(str(match1)+str(match2)))
+
 print(sum(found_numbers))
+print("Process finished --- %s seconds ---" % round(time.time() - start_time, 4))

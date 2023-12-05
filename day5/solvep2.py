@@ -1,9 +1,7 @@
-import re
-import time
+import re, time
 
 start_time = time.time()
-file = open("day5/input.txt", "r")
-category = file.read().split(":")
+category = open("day5/input.txt", "r").read().split(":")
 
 def source_destination_range_map(input):
   returnmap = {}
@@ -12,11 +10,11 @@ def source_destination_range_map(input):
   fullrange = -1
   for r in range(len(input)):
     if r % 3 == 0:
-      destination = float(input[r])
+      destination = int(input[r])
     if r % 3 == 1:
-      source = float(input[r])
+      source = int(input[r])
     if r % 3 == 2:
-      fullrange = float(input[r])
+      fullrange = int(input[r])
     if destination != -1 and source != -1 and fullrange != -1:
       returnmap[str(source) + ',' + str(fullrange)] = str(destination)
       destination = -1
@@ -27,20 +25,19 @@ def source_destination_range_map(input):
 def find_if_in_interval(item, list, nextList, jump):
   for key in list.keys():
     source, fullrange = key.split(',')
-    if float(item) >= float(source) and float(item) < float(source) + float(fullrange):
-      difference = float(item) - float(source)
-      print("Difference:", difference)
-      if 0 < float(fullrange) + float(source) - float(item):
-        jump.append(float(fullrange) + float(source) - float(item))
+    if int(item) >= int(source) and int(item) < int(source) + int(fullrange):
+      difference = int(item) - int(source)
+      if 0 < int(fullrange) + int(source) - int(item):
+        jump.append(int(fullrange) + int(source) - int(item))
       else:
         jump.append(1)
-      return (float(list[key]) + difference)
+      return (int(list[key]) + difference)
   
   smallestjump = 99999999999
   for key in nextList.keys():
     nextsource, _ = key.split(',')
-    if 0 < float(nextsource) - float(item) < smallestjump:
-      smallestjump = float(nextsource) - float(item)
+    if 0 < int(nextsource) - int(item) < smallestjump:
+      smallestjump = int(nextsource) - int(item)
   jump.append(smallestjump)
   return (item)
 
@@ -53,9 +50,9 @@ seed = -1
 fullrange = -1
 for r in range(len(categoryInput[1])):
   if r % 2 == 0:
-    seed = float(categoryInput[1][r])
+    seed = int(categoryInput[1][r])
   if r % 2 == 1:
-    fullrange = float(categoryInput[1][r])
+    fullrange = int(categoryInput[1][r])
   if seed != -1 and fullrange != -1:
     seeds_to_plant.append((seed, fullrange))
     seed = -1
@@ -72,9 +69,7 @@ humidity_to_location = source_destination_range_map(categoryInput[8])
 lowest_location = 99999999999999999999999999
 for key, value in seeds_to_plant:
   index = key
-  print("New seed: ", key, key+value)
   while index <= key+value:
-    print(index, key+value)
     jump = []
     soil = find_if_in_interval(index, seed_to_soil, soil_to_fertilizer, jump)
     fertilizer = find_if_in_interval(soil, soil_to_fertilizer, fertilizer_to_water, jump)
@@ -86,13 +81,9 @@ for key, value in seeds_to_plant:
 
     if loc < lowest_location:
       lowest_location = loc
-    if min(jump) > 0:
-      print("Jump:", min(jump))
     index += min(jump)
     if (index == key+value):
       index += 1
-  print()
 
 print(lowest_location)
-
 print("Process finished --- %s seconds ---" % round(time.time() - start_time, 4))

@@ -1,7 +1,7 @@
-import re
+import re, time
 
-file = open("day3/input.txt", "r")
-lines = file.read().split("\n")
+start_time = time.time()
+lines = open("day3/input.txt", "r").read().split("\n")
 
 matrix  = []
 numbers = []
@@ -38,3 +38,4 @@ for rowIndex, numb in enumerate(numbers):
                 if numbAdded:
                     break
 print(sum(valid))
+print("Process finished --- %s seconds ---" % round(time.time() - start_time, 4))

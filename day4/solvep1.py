@@ -1,7 +1,7 @@
-import re
+import re, time
 
-file = open("day4/input.txt", "r")
-lines = file.read().split("\n")
+start_time = time.time()
+lines = open("day4/input.txt", "r").readlines()
 
 total = 0
 for line in lines:
@@ -21,3 +21,4 @@ for line in lines:
     
     total += cardworth
 print(total)
+print("Process finished --- %s seconds ---" % round(time.time() - start_time, 4))

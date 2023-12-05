@@ -1,11 +1,11 @@
-import re
+import re, time
 
-input = open("day2/input.txt", 'r')
-lines = input.readlines()
+start_time = time.time()
+lines = open("day2/input.txt", "r").readlines()
 
 ids = []
 for line in lines:
-    blueMax, greenMax, redMax = 0
+    blueMax, greenMax, redMax = 0, 0, 0
     gameRegex = "Game (\d+)"
     resultRegex = "((?:(\d+) (\w+)(?:,|)))+"
 
@@ -22,3 +22,4 @@ for line in lines:
             
     ids.append(blueMax*greenMax*redMax)
 print(sum(ids))
+print("Process finished --- %s seconds ---" % round(time.time() - start_time, 4))

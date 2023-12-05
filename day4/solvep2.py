@@ -1,7 +1,7 @@
-import re
+import re, time
 
-file = open("day4/input.txt", "r")
-lines = file.read().split("\n")
+start_time = time.time()
+lines = open("day4/input.txt", "r").readlines()
 
 fixedMatrix = {}
 total = 0
@@ -19,7 +19,6 @@ for line in lines:
             cardworth += 1
     
     fixedMatrix[ticketId] = (1, cardworth)
-print(fixedMatrix)
 
 for line in lines:
     ticketId = int(re.search("\d+", line).group())
@@ -27,9 +26,9 @@ for line in lines:
         if ticketId + i > len(lines):
             continue
         fixedMatrix[ticketId + i] = (fixedMatrix[ticketId + i][0] + fixedMatrix[ticketId][0], fixedMatrix[ticketId + i][1])
-print(fixedMatrix)
 
 total = 0
 for item in fixedMatrix.values():
     total += item[0]
 print(total)
+print("Process finished --- %s seconds ---" % round(time.time() - start_time, 4))

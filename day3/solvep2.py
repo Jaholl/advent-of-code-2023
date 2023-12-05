@@ -1,8 +1,7 @@
-import re
-import math
+import re, math, time
 
-file = open("day3/input.txt", "r")
-lines = file.read().split("\n")
+start_time = time.time()
+lines = open("day3/input.txt", "r").read().split("\n")
 
 matrix  = []
 numbers = []
@@ -53,3 +52,4 @@ for key in valid.keys():
     if len(valid[key]) == 2:
         total.append(math.prod(valid[key]))
 print(sum(total))
+print("Process finished --- %s seconds ---" % round(time.time() - start_time, 4))
