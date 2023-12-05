@@ -1,6 +1,8 @@
 import re
+import time
 
-file = open("day5/input.txt", "r")
+start_time = time.time()
+file = open("day5/sample.txt", "r")
 category = file.read().split(":")
 
 def source_destination_range_map(input):
@@ -22,13 +24,14 @@ def source_destination_range_map(input):
       fullrange = -1
   return returnmap
 
-def find_if_in_interval(item, list):
+def find_if_in_interval(item, list, nextList):
+  nextListIndexes = min([m.split(',')[1] for m in nextList.keys()])
   for key in list.keys():
     indexes = key.split(',')
     if int(item) >= int(indexes[0]) and int(item) <= int(indexes[0]) + int(indexes[1]):
       test = (int(list[key]) + int(item) - int(indexes[0]))
-      return test
-  return item
+      return (item, int(min(nextListIndexes)))
+  return (item, int(min(nextListIndexes)))
 
 categoryInput = []
 for cat in category:
@@ -43,8 +46,7 @@ for r in range(len(categoryInput[1])):
   if r % 2 == 1:
     fullrange = int(categoryInput[1][r])
   if seed != -1 and fullrange != -1:
-    for index in range(seed, seed + fullrange):
-      seeds_to_plant.append(index)
+    seeds_to_plant.append((seed, fullrange))
     seed = -1
     fullrange = -1
 
@@ -57,24 +59,26 @@ temperature_to_humidity = source_destination_range_map(categoryInput[7])
 humidity_to_location = source_destination_range_map(categoryInput[8])
 
 lowest_location = 99999999999999999999999999
-for seed in seeds_to_plant:
-  print("seed:", seed)
-  soil = find_if_in_interval(seed, seed_to_soil)
-  print("soil", soil)
-  fertilizer = find_if_in_interval(soil, soil_to_fertilizer)
-  print("fertilizer", fertilizer)
-  water = find_if_in_interval(fertilizer, fertilizer_to_water)
-  print("water", water)
-  light = find_if_in_interval(water, water_to_light)
-  print("light", light)
-  temp = find_if_in_interval(light, light_to_temperature)
-  print("temp", temp)
-  hum = find_if_in_interval(temp, temperature_to_humidity)
-  print("hum", hum)
-  loc = find_if_in_interval(hum, humidity_to_location)
-  print("loc", loc)
+for key, value in seeds_to_plant:
+  index = key
+  print(key, key+value)
+  test = []
+  while index <= key+value:
+    soil = find_if_in_interval(index, seed_to_soil, soil_to_fertilizer)
+    fertilizer = find_if_in_interval(soil[0], soil_to_fertilizer, fertilizer_to_water)
+    water = find_if_in_interval(fertilizer[0], fertilizer_to_water, water_to_light)
+    light = find_if_in_interval(water[0], water_to_light, light_to_temperature)
+    temp = find_if_in_interval(light[0], light_to_temperature, temperature_to_humidity)
+    hum = find_if_in_interval(temp[0], temperature_to_humidity, humidity_to_location)
+    loc = find_if_in_interval(hum[0], humidity_to_location, humidity_to_location)
+
+    test = [soil[1], fertilizer[1], water[1], light[1], temp[1], hum[1], loc[1]]
+    if loc[0] < lowest_location:
+      lowest_location = loc[0]
+    index += min(test)
+    print(index, key + value, min(test), test)
   print()
-  if loc < lowest_location:
-    lowest_location = loc
 
 print(lowest_location)
+
+print("Process finished --- %s seconds ---" % (time.time() - start_time))
