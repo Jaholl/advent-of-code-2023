@@ -5,19 +5,26 @@ start_time = time.time()
 lines = open("day7/input.txt", "r").readlines()
 
 betmap = {}
-hands = { 0 : [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: []}
+hands = { 0 : [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] }
 for line in lines:
-  cards = [int(c.replace('T', '10').replace('J', '11').replace('Q', '12').replace('K', '13').replace('A', '14')) for c in [*line.split(" ")[0]]]
+  cards = [int(c.replace('T', '10').replace('J', '1').replace('Q', '12').replace('K', '13').replace('A', '14')) for c in [*line.split(" ")[0]]]
   bet = int(line.split(" ")[1])
   betmap["".join(str(cards))] = bet
   mod = {}
+  jokers = 0
   for card in cards:
+    if card == 1:
+      jokers += 1
+      continue
     if card in mod.keys():
       mod[card] += 1
     else:
       mod[card] = 1
   
   unique_cards = len(mod.keys())
+  for i in mod.keys():
+    mod[i] += jokers
+
   if (unique_cards == 5): # high card
     hands[0].append(cards)
   elif (unique_cards == 4): # one pair
